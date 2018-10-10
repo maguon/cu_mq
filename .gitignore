@@ -1,0 +1,11 @@
+*.log
+config/config.js
+config/SystemConfig.js
+conf.json
+public/docs/json/index.json
+.idea/*
+uploads/*
+node_modules
+.DS_Store
+.DS_Store?
+package-lock.json
