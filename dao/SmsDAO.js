@@ -4,13 +4,15 @@ const encrypt = require('../util/Encrypt.js')
 const smsConfig = require('../config/SmsConfig.js');
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('SmsDAO.js');
-const smsTemplate = require('../util/SmsTemplate.js');
-const xml2json = require('xml2json');
+//const smsTemplate = require('../util/SmsTemplate.js');
+//const xml2json = require('xml2json');
+const dateUtil = require('../util/DateUtil.js');
+const https = require('https');
 
 
 
 const sendParamSms = (params, callback) => {
-    var msg = {
+    const msg = {
         to: params.phone,
         appId: smsConfig.smsOptions.appSID,
         templateId: params.templateId,
@@ -49,7 +51,7 @@ const  httpSend = (msg, callback) => {
     };
 
     const httpsReq = https.request(options, (result) => {
-        var data = "";
+        let data = "";
         result.setEncoding('utf8');
         result.on('data', (d) => {
             data += d;

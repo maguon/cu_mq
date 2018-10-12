@@ -1,4 +1,4 @@
-var smsOptions = {
+const smsOptions = {
     action: 'SMS/TemplateSMS',
     accountType: 'Accounts',
     accountSID: '8aaf07085e6037fd015e6e6eb5e60254',
@@ -8,12 +8,18 @@ var smsOptions = {
 
     server: 'app.cloopen.com',
     port: '8883' ,
-    signTemplateId: 348517,
-    notifyTemplateId : 348523 ,
+    captchaTemplateId: 348517,
+    disobeyTemplateId : 348523 ,
 };
+
+const expiredOptions = {
+    captchaTime : 15,
+    parkingTime : 10
+}
 
 
 
 module.exports = {
-    smsOptions  : smsOptions
+    smsOptions  : smsOptions,
+    expiredOptions : expiredOptions
 }

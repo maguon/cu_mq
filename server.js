@@ -3,6 +3,8 @@ const restify = require('restify');
 
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
+const captchaBl = require('./bl/CaptchaBl');
+const parking = require('./bl/Parking');
 
 /**
  * Returns a server with all routes defined on it
@@ -71,6 +73,11 @@ function createServer() {
         maxAge: 0
     }));
 
+    /**
+     * message_info
+     */
+    server.post({path:'/api/captchaBl',contentType:'application/json'},captchaBl.pushSmsCaptcha);
+    server.post({path:'/api/parkingMsg',contentType:'application/json'},parking.pushParkingMsg);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
