@@ -9,7 +9,7 @@ const smsOptions = {
     server: 'app.cloopen.com',
     port: '8883' ,
     captchaTemplateId: 348517,
-    disobeyTemplateId : 348523 ,
+    parkingTemplateId : 348523 ,
 };
 
 const expiredOptions = {
