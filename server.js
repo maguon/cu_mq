@@ -77,7 +77,7 @@ function createServer() {
      * message_info
      */
     server.post({path:'/api/captcha',contentType:'application/json'},captchaBl.pushSmsCaptcha);
-    // server.post({path:'/api/parking',contentType:'application/json'},parking.pushParkingMsg);
+    server.post({path:'/api/parking',contentType:'application/json'},parking.pushParkingMsg);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

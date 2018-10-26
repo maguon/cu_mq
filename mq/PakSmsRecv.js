@@ -2,15 +2,15 @@
 const amqp = require('amqplib/callback_api');
 const all = require('bluebird').all;
 const serverLogger = require('../util/ServerLogger');
-const logger = serverLogger.createLogger('CaptchaSms');
+const logger = serverLogger.createLogger('PakSmsRecv');
 const smsDao = require('../dao/SmsDAO');
 const sysError = require('../util/SystemError');
 const sysMsg = require('../util/SystemMsg');
 const smsConfig = require('../config/SmsConfig');
-const userMessageDao = require('../dao/UserMessageDAO');
 const sysConst = require('../util/SystemConst');
+const userMessageDao = require('../dao/UserMessageDAO');
 
-let keys = ['#.captchaMsg'];
+let keys = ['#.parkingMsg'];
 let exName = 'sms';
 
 const bail=(err, conn)=> {
@@ -20,27 +20,8 @@ const bail=(err, conn)=> {
 
 const getMqMsg=(msg)=>{
     logger.info(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
-    //发送验证码短信
-    sendCaptchaSms(msg);
-}
-
-const sendCaptchaSms=(data)=> {
-    let json = data.content.toString();
-    let params = JSON.parse(json);
-    params.templateId = smsConfig.smsOptions.captchaTemplateId;
-    params.dataArray = [params.captcha,smsConfig.expiredOptions.captchaTime];
-
-    smsDao.sendParamSms(params, (err, result) => {
-        if (err) {
-            logger.info('sendCaptchaSms error', result.toString());
-            throw sysError.InternalError(err.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
-        } else {
-            logger.info('sendCaptchaSms', 'success');
-            //更新数据库内容
-            params.status = '1';//发送成功
-            updateMessage(params);
-        }
-    });
+    //发送违停短信
+    sendParkingSms(msg);
 }
 
 const updateMessage=(params)=>{
@@ -53,6 +34,25 @@ const updateMessage=(params)=>{
         }
     });
 
+}
+
+const sendParkingSms=(data)=> {
+    let json = data.content.toString();
+    let params = JSON.parse(json);
+    params.templateId = smsConfig.smsOptions.parkingTemplateId;
+    params.dataArray = [params.plateNumber,params.timeStr,params.address,smsConfig.expiredOptions.parkingTime];
+
+    smsDao.sendParamSms(params, (err, result) => {
+        if (err) {
+            logger.info('sendParkingSms error', result.toString());
+            throw sysError.InternalError(err.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
+        } else {
+            logger.info('sendParkingSms', 'success');
+            //更新信息状态
+            params.status = '1';//发送成功
+            updateMessage(params);
+        }
+    });
 }
 
 const connect=(err,conn)=>{

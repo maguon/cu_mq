@@ -5,7 +5,7 @@ const resUtil = require('../util/ResponseUtil');
 const sysError = require('../util/SystemError');
 const sysMsg = require('../util/SystemMsg');
 const captchaTask = require('../mq/CapTask');
-const userMessageDao = require('../dao/UserMessageDao');
+const userMessageDao = require('../dao/UserMessageDAO');
 const smsConfig = require('../config/SmsConfig');
 const sysConst = require('../util/SystemConst');
 
@@ -28,7 +28,7 @@ const sendMq =(params,res,next)=>{
 const pushSmsCaptcha = (req,res,next) =>{
     let params = req.params;
     params.type = sysConst.msgType.captcha;
-    params.content = 'captcha:'+params.captcha+',captchaTime:'+smsConfig.expiredOptions.captchaTime;
+    params.content = params.captcha+',';
     userMessageDao.addMessage(params,(err,rows)=>{
         if (err){
             logger.info('addMessage',err.message);
