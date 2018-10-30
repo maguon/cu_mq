@@ -5,7 +5,7 @@ const sysError = require('../util/SystemError');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const logger = serverLogger.createLogger('Parking');
-const parkingTask = require('../mq/PakTask');
+const parkingTask = require('../mq/PakTasker');
 const sysConst = require('../util/SystemConst');
 const userMessageDao = require('../dao/UserMessageDAO');
 
