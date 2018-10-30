@@ -14,7 +14,7 @@ let keys = ['#.parkingMsg'];
 let exName = 'sms';
 
 const bail=(err, conn)=> {
-    console.error(err);
+    logger.error('PakSmsRecv error :'+err.message);
     if (conn) conn.close(function() { process.exit(1); });
 }
 
@@ -27,7 +27,7 @@ const getMqMsg=(msg)=>{
 const updateMessage=(params)=>{
     userMessageDao.updateStatus(params,(err)=>{
         if (err){
-            logger.info('updateMessage',err.message);
+            logger.error('updateMessage',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else{
             logger.info('updateMessage','success');
@@ -44,7 +44,7 @@ const sendParkingSms=(data)=> {
 
     smsDao.sendParamSms(params, (err, result) => {
         if (err) {
-            logger.info('sendParkingSms error', result.toString());
+            logger.error('sendParkingSms error'+ result.toString());
             throw sysError.InternalError(err.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else {
             logger.info('sendParkingSms', 'success');

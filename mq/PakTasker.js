@@ -53,6 +53,7 @@ const sendTopicMsg = (params, exName, topic, callback) =>{
                     ch.sendToQueue(errQueue,new Buffer(JSON.stringify(params)),{durable:true},function () {
                         ch.close();
                     });
+
                 });
             });
             logger.info(" send to rabbit exchange success :" + message);

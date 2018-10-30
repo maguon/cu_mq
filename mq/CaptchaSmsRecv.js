@@ -14,7 +14,7 @@ let keys = ['#.captchaMsg'];
 let exName = 'sms';
 
 const bail=(err, conn)=> {
-    console.error(err);
+    logger.error('CaptchaSmsRecv error'+err.message);
     if (conn) conn.close(function() { process.exit(1); });
 }
 
@@ -32,7 +32,7 @@ const sendCaptchaSms=(data)=> {
 
     smsDao.sendParamSms(params, (err, result) => {
         if (err) {
-            logger.info('sendCaptchaSms error', result.toString());
+            logger.error('sendCaptchaSms error:'+ result.toString());
             throw sysError.InternalError(err.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else {
             logger.info('sendCaptchaSms', 'success');
@@ -46,7 +46,7 @@ const sendCaptchaSms=(data)=> {
 const updateMessage=(params)=>{
     userMessageDao.updateStatus(params,(err)=>{
         if (err){
-            logger.info('updateMessage',err.message);
+            logger.error('updateMessage',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else{
             logger.info('updateMessage','success');
