@@ -14,7 +14,7 @@ const smsOptions = {
 
 const expiredOptions = {
     captchaTime : 15,
-    parkingTime : 10
+    parkingTime : 5
 }
 
 
