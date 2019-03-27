@@ -7,6 +7,7 @@ const sysMsg = require('../util/SystemMsg');
 const captchaTask = require('../mq/CapTasker');
 const userMessageDao = require('../dao/UserMessageDAO');
 const sysConst = require('../util/SystemConst');
+const moment = require('moment/moment.js');
 
 const sendMq =(params,res,next,rows)=>{
     let ex = 'sms';
@@ -28,6 +29,7 @@ const pushSmsCaptcha = (req,res,next) =>{
     let params = req.params;
     params.type = sysConst.msgType.captcha;
     params.content = params.captcha;
+    params.dateId = moment().format("YYYYMMDD");
     userMessageDao.addMessage(params,(err,rows)=>{
         if (err){
             logger.info('addMessage',err.message);

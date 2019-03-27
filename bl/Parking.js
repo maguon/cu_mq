@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('Parking');
 const parkingTask = require('../mq/PakTasker');
 const sysConst = require('../util/SystemConst');
 const userMessageDao = require('../dao/UserMessageDAO');
+const moment = require('moment/moment.js');
 
 const sendMq =(params,res,next)=>{
     let ex = 'sms';
@@ -32,6 +33,7 @@ const pushParkingMsg = (req,res,next) => {
     let params = req.params;
     params.type = sysConst.msgType.parking;
     params.content = params.plateNumber+','+params.timeStr+','+params.address;
+    params.dateId = moment().format("YYYYMMDD");
     userMessageDao.addMessage(params,function (err,rows) {
         if (err){
             logger.info('addParkingMessage',err.message);
