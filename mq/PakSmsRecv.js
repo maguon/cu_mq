@@ -14,12 +14,12 @@ let keys = ['#.parkingMsg'];
 let exName = 'sms';
 
 const bail=(err, conn)=> {
-    logger.error('PakSmsRecv error :'+err.message);
+    logger.error('mq PakSmsRecv error :'+err.message);
     if (conn) conn.close(function() { process.exit(1); });
 }
 
 const getMqMsg=(msg)=>{
-    logger.info(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
+    logger.info('mq '+" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
     //发送违停短信
     sendParkingSms(msg);
 }
@@ -27,10 +27,10 @@ const getMqMsg=(msg)=>{
 const updateMessage=(params)=>{
     userMessageDao.updateStatus(params,(err)=>{
         if (err){
-            logger.error('updateMessage',err.message);
+            logger.error('mq updateMessage ',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else{
-            logger.info('updateMessage','success');
+            logger.info('mq updateMessage ','success');
         }
     });
 
@@ -44,10 +44,10 @@ const sendParkingSms=(data)=> {
 
     smsDao.sendParamSms(params, (err, result) => {
         if (err) {
-            logger.error('sendParkingSms error'+ result.toString());
+            logger.error('mq sendParkingSms error:'+ result.toString());
             throw sysError.InternalError(err.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else {
-            logger.info('sendParkingSms', 'success');
+            logger.info('mq sendParkingSms ', 'success');
             //更新信息状态
             params.status = '1';//发送成功
             updateMessage(params);
@@ -75,7 +75,7 @@ const connect=(err,conn)=>{
 
             ch.consume(queue, getMqMsg, {noAck: true},(err)=>{//noAck:true  RabbitMQ 会自动把发送出去的 消息置为确认，然后从内存(或者磁盘)中删除
                 if (err !== null) return bail(err, conn);
-                logger.info(' [*] Waiting for logs. To exit press CTRL+C.');
+                logger.info('mq '+' [*] Waiting for logs. To exit press CTRL+C.');
             });
         });
     }

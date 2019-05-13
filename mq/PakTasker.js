@@ -15,13 +15,13 @@ const sendTopicMsg = (params, exName, topic, callback) =>{
     let rabbitConnect = myCon.getConnection();
 
     if (rabbitConnect == null) {
-        logger.error("can not connect rabbit :" + sysMsg.SYS_MESSAGE_QUEUE_ERROR_MSG);
+        logger.error("mq can not connect rabbit :" + sysMsg.SYS_MESSAGE_QUEUE_ERROR_MSG);
         return callback(sysError.InternalError, null);
     }
 
     const confirmChannel=(err,ch)=>{
         if (err != null){
-            logger.error("create rabbit channel error :" + error.message);
+            logger.error("mq create rabbit channel error :" + error.message);
             callback(error, null);
         } else {
 
@@ -56,7 +56,7 @@ const sendTopicMsg = (params, exName, topic, callback) =>{
 
                 });
             });
-            logger.info(" send to rabbit exchange success :" + message);
+            logger.info("mq send to rabbit exchange success :" + message);
             callback(err, ch);
         }
     }
