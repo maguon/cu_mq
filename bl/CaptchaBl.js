@@ -15,10 +15,10 @@ const sendMq =(params,res,next,rows)=>{
     //rabbitmq topic
     captchaTask.sendTopicMsg(params,ex,exType,function (err) {
         if (err){
-            logger.info('pushSmsCaptcha'+err.message);
+            logger.info('mqbl sendMq sendTopicMsg '+err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else {
-            logger.info('pushSmsCaptcha:' + 'success' );
+            logger.info('mqbl sendMq sendTopicMsg ' + 'success' );
             resUtil.resetCreateRes(res,rows,null);
             return next();
         }
@@ -32,10 +32,10 @@ const pushSmsCaptcha = (req,res,next) =>{
     params.dateId = moment().format("YYYYMMDD");
     userMessageDao.addMessage(params,(err,rows)=>{
         if (err){
-            logger.info('addMessage',err.message);
+            logger.info('mqbl pushSmsCaptcha addMessage ',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else{
-            logger.info('addMessage','success');
+            logger.info('mqbl pushSmsCaptcha addMessage ','success');
             //发送消息
             params.insertId = rows.insertId;
             sendMq(params,res,next,rows);
