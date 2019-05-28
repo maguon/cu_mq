@@ -1,7 +1,7 @@
 'use strict'
 const amqp = require('amqplib/callback_api');
 const serverLogger = require('../util/ServerLogger');
-const logger = serverLogger.createLogger('CaptchaSmsRecv');
+const logger = serverLogger.createLogger('CapTasker');
 const sysError = require('../util/SystemError');
 const sysMsg = require('../util/SystemMsg');
 const myCon = require('../db/connection/MqCon');
@@ -43,7 +43,7 @@ const sendTopicMsg = (params, exName, topic, callback) =>{
                     let errQueOptions = {durable:true,autoDelete:false,exclusive: false};
                     let options = Object.create(errQueOptions);
                     options.arguments={'x-message-ttl':sysConst.mqMsg.errQueueTtl};
-                    Smsch.assertQueue(errQueue,options);
+                    ch.assertQueue(errQueue,options);
                     //绑定
                     ch.bindQueue(errQueue,errorExchange,'');
                     //将出问题的消息保存在队列内

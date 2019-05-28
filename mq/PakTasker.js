@@ -1,7 +1,7 @@
 'use strict'
 const amqp = require('amqplib/callback_api');
 const serverLogger = require('../util/ServerLogger');
-const logger = serverLogger.createLogger('CapTask');
+const logger = serverLogger.createLogger('PakTasker');
 const sysError = require('../util/SystemError');
 const sysMsg = require('../util/SystemMsg');
 const myCon = require('../db/connection/MqCon');
