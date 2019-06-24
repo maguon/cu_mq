@@ -15,7 +15,7 @@ const sendMq =(params,res,next,rows)=>{
     //rabbitmq topic
     captchaTask.sendTopicMsg(params,ex,exType,function (err) {
         if (err){
-            logger.info('mqbl sendMq sendTopicMsg '+err.message);
+            logger.error('mqbl sendMq sendTopicMsg '+err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else {
             logger.info('mqbl sendMq sendTopicMsg ' + 'success' );
@@ -32,7 +32,7 @@ const pushSmsCaptcha = (req,res,next) =>{
     params.dateId = moment().format("YYYYMMDD");
     userMessageDao.addMessage(params,(err,rows)=>{
         if (err){
-            logger.info('mqbl pushSmsCaptcha addMessage ',err.message);
+            logger.error('mqbl pushSmsCaptcha addMessage ',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else{
             logger.info('mqbl pushSmsCaptcha addMessage ','success');
