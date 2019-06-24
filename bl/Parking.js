@@ -19,7 +19,7 @@ const sendMq =(params,res,next)=>{
     //rabbitmq topic
     parkingTask.sendTopicMsg(params,ex,exType,function (err,result) {
         if (err){
-            logger.info('mqbl pushSmsCaptcha ',err.message);
+            logger.error('mqbl pushSmsCaptcha ',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else {
             logger.info('mqbl pushSmsParking ' ,'success' );
@@ -36,7 +36,7 @@ const pushParkingMsg = (req,res,next) => {
     params.dateId = moment().format("YYYYMMDD");
     userMessageDao.addMessage(params,function (err,rows) {
         if (err){
-            logger.info('mqbl pushParkingMsg addMessage ',err.message);
+            logger.error('mqbl pushParkingMsg addMessage ',err.message);
             throw sysError.InternalError(err.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         } else{
             logger.info('mqbl pushParkingMsg addMessage ','success');
